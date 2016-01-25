@@ -1,0 +1,26 @@
+<h1> <%="#{@user.name}"%>'s Friends </h1>
+
+ <% if @user.present? %>
+  <ul>
+   	<% @user.friends.each do |user| %>
+   	 <% unless user == current_user %>
+     <li>
+      <%=link_to image_tag(user.profile_picture_url), show_other_user_user_path(user) %>
+      <p>
+        <strong><%= link_to user.name, show_other_user_user_path(user) %></strong>
+        
+        <% unless ((current_user.friends.include? user) || (current_user.pending_friends.include? user) || (current_user.requested_friends.include? user)) %>
+          &mdash;
+          <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
+        <% end %> 
+      </p> 
+     </li>	
+     <hr> 
+     <% end %>
+    <% end %>
+  </ul> 
+ <% else %>
+ 	Has no other friends. 		
+ <% end %>
+
+<%= link_to 'Back to home', root_path %>

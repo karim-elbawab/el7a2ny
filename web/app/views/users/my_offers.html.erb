@@ -1,0 +1,20 @@
+<h1> My Offers </h1>
+
+ <% if @offers.present? %>
+  <ul>
+    <% @offers.each do |offer| %>
+     <li>
+     	<%= link_to offer.name, offer_path(offer) %>
+        &mdash;
+        <% if offer.admin_id == current_user.id %>
+          <%= link_to 'Edit Offer', edit_offer_path(offer) %> 
+          |
+          <%= link_to 'Delete Offer', offer_path(offer), :method => :delete, :confirm => 'Are you sure?' %>
+        <% end %> 
+     </li>   
+    <% end %>
+  </ul> 
+ <% else %>
+  No offers.    
+ <% end %>
+

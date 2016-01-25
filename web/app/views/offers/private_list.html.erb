@@ -1,0 +1,33 @@
+<h1><%= @offer.name %></h1>
+<% users_not_allowed = 1 %>
+<%  @users.each do |user| %>
+	<% if user.private_offers.include?(@offer) %>
+		<% users_not_allowed += 1 %>
+	<% end %>
+<% end %>
+<h2>choose from the list the users that will be able to see this offer:</h2>
+ <% if @users.length > users_not_allowed %>
+ 	<ul>
+   	<% @users.each do |user| %>
+	   
+	   	<% if user != current_user %>
+		   	<% if !(user.private_offers.include?(@offer)) %>
+		   	 <li>
+		      <p>
+		      	<% @invitation = Invitation.new %>
+		      	<%= form_for @invitation do |f| %>
+		      		<%= f.hidden_field :offer_id, :value => @offer.id %>
+		      		<%= f.hidden_field :user_id, :value => user.id %>
+		      		<strong><%= link_to user.name, show_other_user_user_path(user) %></strong>
+					<%= f.submit "add" %>
+		        <% end %>	
+		      </p> 
+		     </li>	
+		    <% end %>
+		<% end %>   
+    <% end %>
+  </ul> 
+ <% else %>
+ 	There is no user to be added.
+ <% end %>
+ <%= button_to "Go to Offer Page", @offer, method: :get %>

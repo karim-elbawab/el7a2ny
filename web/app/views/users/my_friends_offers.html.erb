@@ -1,0 +1,35 @@
+<h1> My Friends Offers </h1>
+
+ <% if @users.present? %>
+  <ul>
+   	<% @users.each do |user| %>
+   	 <li>
+      <p>
+        <% if user.offers.present? %>
+         <strong><%= link_to user.name, show_other_user_user_path(user) %></strong>
+          <ul>
+            <% user.offers.each do |offer| %>
+             <li>
+              <%= link_to offer.name, offer_path(offer) %>
+                &mdash;
+                <% if offer.admin_id == current_user.id %>
+                  <%= link_to 'Edit Offer', edit_offer_path(offer) %> 
+                  |
+                  <%= link_to 'Delete Offer', offer_path(offer), :method => :delete, :confirm => 'Are you sure?' %>
+                <% end %> 
+             </li>   
+            <% end %>
+          </ul> 
+         <% else %>
+          No offers.    
+        <% end %>
+      </p> 
+     </li>	
+     <hr> 
+    <% end %>
+  </ul> 
+ <% else %>
+ 	You haven't any friends yet. 		
+ <% end %>
+
+<%= link_to 'Back to home', root_path %>

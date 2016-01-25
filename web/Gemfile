@@ -1,0 +1,19 @@
+source 'https://rubygems.org'
+
+gem 'rails', '4.0.4'
+gem 'mysql2'
+
+
+gem 'sass-rails', '~> 4.0.2'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'dynamic_form'
+gem 'jquery-rails'
+gem 'carrierwave'
+gem 'omniauth-facebook', '~> 1.4.1'
+gem 'rabl'
+gem 'ngrok'
+
+group :development do
+  gem 'spring'
+end

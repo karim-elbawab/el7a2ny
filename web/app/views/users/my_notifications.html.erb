@@ -1,0 +1,47 @@
+<h1> My Notifications </h1>
+
+ <% if @notifications.present? %>
+  <ul>
+    <% @notifications.each do |notification| %>
+     <% notification.update(:seen => true) %>
+     <% notification.save %>
+     <li>
+      <% if notification.category == 'comment' %>
+        <% user2 = User.find(notification.user2_id) %>
+        <%= link_to user2.name, show_other_user_user_path(user2) %>
+        commented on your offer
+        <% offer = Offer.find(notification.offer_id) %>
+        <%= link_to offer.name, offer_path(offer) %>
+      <% end %>
+      <% if notification.category == 'reply1' %>
+        <% user2 = User.find(notification.user2_id) %>
+        <%= link_to user2.name, show_other_user_user_path(user2) %>
+        replied on your offer
+        <% offer = Offer.find(notification.offer_id) %>
+        <%= link_to offer.name, offer_path(offer) %>  
+      <% end %>
+      <% if notification.category == 'reply2' %>
+        <% user2 = User.find(notification.user2_id) %>
+        <%= link_to user2.name, show_other_user_user_path(user2) %>
+        replied on your comment on offer
+        <% offer = Offer.find(notification.offer_id) %>
+        <%= link_to offer.name, offer_path(offer) %>  
+      <% end %>
+      <% if notification.category == 'friendship accept' %>
+        <% user2 = User.find(notification.user2_id) %>
+        <%= link_to user2.name, show_other_user_user_path(user2) %>
+        confirm your friend request
+      <% end %>
+      <% if notification.category == 'private offer' %> 
+        <% user2 = User.find(notification.user2_id) %>
+        <%= link_to user2.name, show_other_user_user_path(user2) %>
+        added you to see his private offer
+        <% offer = Offer.find(notification.offer_id) %>
+        <%= link_to offer.name, offer_path(offer) %> 
+      <% end %> 
+     </li>   
+    <% end %>
+  </ul> 
+ <% else %>
+  There are no notifications to be shown.
+ <% end %>

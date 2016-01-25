@@ -1,0 +1,13 @@
+<h1><%= @offer.name %></h1>
+<% if !@users.empty? %>
+	<h2>Users who allowed to see that offers are: </h2>
+		<% @users.each do |user| %>
+			<strong><%= link_to user.name, show_other_user_user_path(user) %></strong>
+			<%= button_to "Remove", invitation_path(Invitation.where(:offer_id => @offer.id, :user_id => user.id).first), method: :delete, data: { confirm: "Are you sure?" } %>
+		<% end %>
+<% else %>
+	There are no user who can see this offer.	
+<% end %>	
+<br/>
+<br/>
+<%= button_to "Go to Offer Page", @offer, method: :get %>

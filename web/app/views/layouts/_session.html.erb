@@ -1,0 +1,37 @@
+<% if current_user? %>
+	Welcome,
+	<%= link_to current_user.name, current_user %>
+	&bull;
+	<%= link_to 'Logout', session_path(current_user), method: :delete %>
+	<p><%= link_to 'Update profile', edit_user_path(current_user) %></p>
+	<p><%= link_to 'List of all other users', other_users_user_path(current_user) %></p>
+	<p><%= link_to 'My friends', my_friends_user_path(current_user) %></p>
+	<p><%= link_to 'Pending friends', pending_friends_user_path(current_user) %></p>
+	<p><%= link_to 'Requested friends', requested_friends_user_path(current_user) %></p>
+	<p><%= link_to 'All users offers', offers_path(current_user) %></p>
+	<p><%= link_to 'Create new offer',  new_offer_path(current_user) %></p>
+	<p><%= link_to 'My Offers',  my_offers_user_path(current_user) %></p>
+	<p><%= link_to 'My friends offers',  my_friends_offers_user_path(current_user) %></p>
+	<% counter = 0 %>
+	<% @notifications = current_user.notifications.all %>
+ 	<% if @notifications.present? %>
+    	<% @notifications.each do |notification| %>
+    		<% if notification.seen == false %>
+    			<% counter = counter+1 %>
+    		<% end %>
+    	<% end %>
+ 	<% end %>
+	<p><%= link_to "My notifications(#{counter})", my_notifications_user_path(current_user) %></p>
+<% else %>
+	<%= form_for :session, url: sessions_path, html: { style: 'display: inline-block;'} do |f| %>
+		<%= f.label :email%>
+		<%= f.email_field :email %>
+		<%= f.label :password %>
+		<%= f.password_field :password %>
+		<%= f.submit "Login" %>
+	or
+	<%= link_to 'Register', new_user_path %>
+	or
+	<%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>	
+	<% end %>
+<% end %>	

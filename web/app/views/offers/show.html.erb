@@ -1,0 +1,117 @@
+<h1><%= @offer.name %></h1>
+<dl>
+	
+	<dt>
+		<strong> Image </strong>
+	</dt>
+	<dd>
+  	<%= image_tag @offer.photo.to_s, width: 200 %> 
+	</dd>
+	<dt>
+		<strong> category </strong>
+	</dt>
+	<dd> 
+		<%= @offer.category %> 
+	</dd>
+	<dt>
+    <strong> attachment </strong>
+  </dt>
+  <dd> 
+    <%= link_to "#{@offer.attachment}".split("/").last , "#{@offer.attachment}" %>
+  </dd>
+  <dt>
+		<strong> description </strong>
+	</dt>
+	<dd> 
+		<%= @offer.description %> 
+	</dd>
+</dl>
+<% if @offer.admin_id == current_user.id %>
+  <%= link_to 'Offer members', offer_members_offer_path(@offer) %> 
+  |
+  <%= link_to 'Add new users', private_list_offer_path(@offer) %>
+  |
+  <%= link_to 'Edit Offer', edit_offer_path(@offer) %> 
+  |
+  <%= link_to 'Delete Offer', offer_path(@offer), :method => :delete, :confirm => 'Are you sure?' %>
+  <br />
+<% end %> 
+
+<% if @offer.comments.present? %>
+  <h2>Comments</h2>
+  <ul>
+    <% @offer.comments.each do |comment| %>
+      <% if comment.private == false || (comment.private == true && (User.find(comment.comment_owner) == current_user || @offer.admin_id == current_user.id)) %>
+       <li>
+       	<p><%= User.find(comment.comment_owner).name %>
+           at
+           <%= comment.created_at %>
+       	</p>
+       	<p>
+       	<%= comment.description %>	
+       	</p>
+        <% if comment.attach.present? %>
+          <p>
+            <strong>Attachment: </strong> 
+            <%= link_to "#{comment.attach}".split("/").last , "#{comment.attach}" %>
+          </p>
+        <% end %>  
+       	<p>  
+          <% if User.find(comment.comment_owner) == current_user %>
+          <%= link_to 'Delete comment', comment_path(comment), :method => :delete, :confirm => 'Are you sure?' %>
+          |
+          <% if comment.private == false %>
+            <%= link_to 'set comment private', comment_path(comment), :method => :patch, :confirm => 'Are you sure?' %>
+          <% end %>  
+         <% end %> 
+        </p>
+        <% if comment.replies.present? %>
+          <h3>Replies</h3>
+          <ul> 
+            <% comment.replies.each do |reply| %>
+              <li>
+                <p><%= User.find(reply.reply_owner).name %>
+                   at
+                  <%= reply.created_at %>
+                </p>
+                <p>
+                  <%= reply.description %>  
+                </p>
+                <% if User.find(reply.reply_owner) == current_user %>
+                  <%= link_to 'Delete reply', reply_path(reply), :method => :delete, :confirm => 'Are you sure?' %>
+                <% end %>
+              </li>  
+            <% end %>
+          </ul>  
+        <% end %>
+        <%= form_for @reply do |f|%>
+          <%= f.hidden_field :comment_id, :value => comment.id %>
+          <%= f.label :description %>
+          <br/>
+          <%= f.text_area :description %>
+          <br/>
+          <%= f.submit 'Reply' %>
+        <% end %>      
+       </li>   
+       <hr>
+      <% end %> 
+    <% end %>
+  </ul>     
+<% end %>
+
+<h2> Add comment</h2>
+<%= form_for @comment do |f| %>
+
+  <%= f.hidden_field :group_id, :value => @offer.id %>
+ 
+  <%= f.label :description %>
+  <br/>
+  <%= f.text_area :description %>
+  <%= f.label :private %>
+  <%= f.check_box :private %>
+  <br/>
+  <%= f.label :attach,'Add attachment' %>
+  <%= f.file_field :attach %>
+  <br/>
+  <%= f.submit 'Comment' %>
+<% end %>

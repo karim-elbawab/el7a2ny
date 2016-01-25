@@ -1,0 +1,37 @@
+<h1> <%= @user.name %> </h1>
+ 
+<dl>
+ <dt><strong> Profile Photo </strong></dt>
+ <dd> <%= image_tag @user.profile_picture_url.to_s, width: 200 %> </dd> 
+</dl>
+<dl>
+
+<dl>
+ <dt><strong> Email </strong></dt>
+ <dd> <%= @user.email %> </dd> 
+</dl>
+<dl>
+ <dt><strong> First name </strong></dt>
+ <dd> <%= @user.first_name %> </dd> 
+</dl>
+<dl>
+ <dt><strong> Last name </strong></dt>
+ <dd> <%= @user.last_name %> </dd> 
+</dl>
+<dl>
+ <dt><strong> Country </strong></dt>
+ <dd> <%= @user.country %> </dd> 
+</dl>
+<dl>
+ <dt><strong> City </strong></dt>
+ <dd> <%= @user.city %> </dd> 
+</dl>
+<dl>
+ <dt><strong> Gender </strong></dt>
+ <dd> <%= @user.gender %> </dd> 
+</dl>
+<dl>
+ <dt><strong> Birth date </strong></dt>
+ <dd> <%= @user.birth_date %> </dd> 
+</dl>
+<%= link_to 'Back to Home', root_path %>

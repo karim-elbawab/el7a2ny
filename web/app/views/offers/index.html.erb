@@ -1,0 +1,21 @@
+<h1> All Users Offers </h1>
+
+ <% if @offers.present? %>
+  <ul>
+    <% @offers.each do |offer| %>
+     <% if (offer.private == true && offer.users.include?(current_user)) || offer.private == false %>
+       <li><%= link_to offer.name, offer_path(offer) %>
+           
+          <% if offer.admin_id == current_user.id %>
+            &mdash;
+            <%= link_to 'Edit Offer', edit_offer_path(offer) %> 
+            |
+            <%= link_to 'Delete Offer', offer_path(offer), :method => :delete, :confirm => 'Are you sure?' %>
+          <% end %> 
+       </li>
+      <% end %>    
+    <% end %>
+  </ul> 
+ <% else %>
+  No offers.    
+ <% end %>
